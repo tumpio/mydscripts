@@ -1,0 +1,18 @@
+# GAME DIRECTORIES CONTAINING MULTIPLE GAMES
+
+SetVariable(GamesDirectoryPath,"*\Games")              # Set path to your common game installation directory e.g. G:\Games
+SetVariable(SteamGamesPath,"*\Steam\steamapps\common") # Set path to your Steam games directory
+SetVariable(DesuraGamesPath,"*\Desura\common")         # Set path to your Desura games directory
+SetVariable(OriginGamesPath,"*\Origin Games")          # Set path to your Origin games directory
+SetVariable(OtherGamesPath,"0")                        # Extra path if needed, disabled by default
+
+SetVariable(SteamAppPath,"*\Steam")               # Set path to your Steam Application directory
+SetVariable(DesuraAppPath,"*\Desura")             # Set path to your Desura Application directory
+SetVariable(OriginAppPath,"*\Origin")             # Set path to your Origin Application directory
+SetVariable(OtherAppPath,"0")                     # Extra path if needed, disabled by default
+
+# To disable any variable set it's value to 0
+# e.g. SetVariable(OriginGamesPath,"0")
+
+# Below only used for automatic list generation
+SetVariable(GameDirList,"!GamesDirectoryPath!/!SteamGamesPath!/!DesuraGamesPath!/!OriginGamesPath!/!OtherGamesPath!")

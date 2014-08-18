@@ -1,0 +1,6 @@
+OtherInstances(Exit)
+BatteryPower(Exit)
+
+!include GamesOptimization\Settings!
+
+RunProgram("CMD","!StartMyD! DriveLetter=!ScheduledDrive! !WeeklyOptions! !WeeklyScheduleOptions!")

@@ -1,0 +1,13 @@
+# FAVORITE GAME 1:
+SetVariable(FavoriteGame,"MY FAVORITE GAME 1.") # <- Replace "MY FAV.." with name or path of game directory
+!include zone\FavGame.MyD!
+
+# FAVORITE GAME 2:
+SetVariable(FavoriteGame,"MY FAVORITE GAME 2.")
+!include zone\FavGame.MyD!
+
+# FAVORITE GAME 3:
+SetVariable(FavoriteGame,"MY FAVORITE GAME 3.")
+!include zone\FavGame.MyD!
+
+# ..CREATE AS MANY MORE AS NEEDED.

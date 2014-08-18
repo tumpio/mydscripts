@@ -1,0 +1,18 @@
+Title('ExpressOptimizing: Weekly')
+Description("ExpressOptimizing: Weekly
+
+An express system optimizing script with fast processing time.
+Script optimizes only prefetched files and defragments and consolidates all other files.
+
+See all the script settings at ExpressOptimizing\Settings.MyD file.
+
+You can also write your own custom drive specific zones to ExpressOptimizing\zone\Custom.MyD file.")
+
+!include "ExpressOptimizing\Settings"!
+
+VolumeSelect
+  CommandLineVolumes()
+VolumeActions
+VolumeEnd
+
+RunProgram("CMD","!StartMyD! DriveLetter=!MountPoint! !WeeklyOptions!")

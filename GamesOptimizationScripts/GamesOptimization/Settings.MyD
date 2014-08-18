@@ -1,0 +1,113 @@
+# INITIALIZED OPTIONS
+  // DO NOT CHANGE
+  WindowSize(Invisible)
+  SetVariable(Enabled,"")
+  SetVariable(Disabled,"#")
+  SetVariable(IsIncluded,"!")
+  SetVariable(IsExcluded,"#")
+  SetVariable(q,'"""')
+  SetVariable(ps,'"%"')
+  SetVariable(MonthlyOptions,"")
+  SetVariable(WeeklyOptions,"")
+  SetVariable(FavOnlyOptions,"")
+  SetVariable(Options,'ScheduleOptions= NotInFavOnlyStart= NotInFavOnlyEnd= ZONE="Message(!q!Zone !ps!1u of !ps!2u!q!, !q!Task !ps!1u/!ps!2u"')
+
+# MONTHLY OPTIONS
+ /*
+  * File actions and other options for the Monthly version.
+  */
+  SetVariable(MonthlyOptions,'!MonthlyOptions! Version=Monthly')
+  SetVariable(MonthlyOptions,'!MonthlyOptions! SortDirectories=!Enabled!')
+  SetVariable(MonthlyOptions,'!MonthlyOptions! ZonePath=bat')
+  SetVariable(MonthlyOptions,'!MonthlyOptions! VersionFileActions="Defragment(Fast) Defragment() MoveUpToZone() FastFill(WithShuffling)"')
+  SetVariable(MonthlyOptions,'!MonthlyOptions! FavGameFileActions="Defragment(Fast) Defragment() MoveUpToZone() FastFill(WithShuffling)"')
+
+# WEEKLY OPTIONS
+ /*
+  * File actions and other options for the Weekly version.
+  */
+  SetVariable(WeeklyOptions,"!WeeklyOptions! Version=Weekly")
+  SetVariable(WeeklyOptions,"!WeeklyOptions! SortDirectories=!Disabled!")
+  SetVariable(WeeklyOptions,'!WeeklyOptions! ZonePath=zone')
+  SetVariable(WeeklyOptions,'!WeeklyOptions! VersionFileActions="Defragment(Fast) MoveUpToZone() FastFill()"')
+  SetVariable(WeeklyOptions,'!WeeklyOptions! FavGameFileActions="Defragment(Fast) Defragment() MoveUpToZone() FastFill()"')
+
+# FAVORITES ONLY OPTIONS
+ /*
+  * File actions and other options for the Favorites Only version.
+  */
+  SetVariable(FavOnlyOptions,'!FavOnlyOptions! Version="Favorite Games Only"')
+  SetVariable(FavOnlyOptions,'!FavOnlyOptions! NotInFavOnlyStart=/*')
+  SetVariable(FavOnlyOptions,'!FavOnlyOptions! NotInFavOnlyEnd=*/')
+  SetVariable(FavOnlyOptions,'!FavOnlyOptions! SortDirectories=!Disabled!')
+  SetVariable(FavOnlyOptions,'!FavOnlyOptions! VersionFileActions="Defragment(Fast) Defragment() MoveUpToZone() FastFill(WithShuffling)"')
+  SetVariable(FavOnlyOptions,'!FavOnlyOptions! FavGameFileActions="Defragment(Fast) Defragment() MoveUpToZone() FastFill(WithShuffling)"')
+
+# SCHEDULE OPTIONS
+ /*
+  * Settings for the scheduled scripts.
+  * Configured to run without any visible window and to close when finished.
+  * Weekly version has more settings to run it slower than normal and
+  * with the lowest priority. This allows to run it while using the pc.
+  * Read the definitions of all available settings from MyDefrag manual.
+  */
+  SetVariable(ScheduledDrive,"G:")
+  SetVariable(WeeklyScheduleOptions, 'ScheduleOptions="WindowSize(Invisible) Slowdown(40) ProcessPriority(Background)"')
+  SetVariable(MonthlyScheduleOptions,'ScheduleOptions="WindowSize(Invisible)"')
+
+# SPACE HOG FILES
+  /*
+   * To move them to the end of the disk, change "SpaceHogsFileActions" to "MoveToEndOfDisk()".
+   * To disable space hogs selection set "SpaceHogs" to "!IsExcluded!"
+   */
+  SetVariable(Options,'!Options! SpaceHogs=!IsIncluded!')
+  SetVariable(Options,'!Options! SpaceHogsPosition="MakeGap(RoundUp(VolumeUsed, Minimum(VolumeSize * 0.1, 5 GB)), DoNotVacate)"')
+  SetVariable(Options,'!Options! SpaceHogsFileActions="Defragment(Fast) MoveUpToZone() FastFill()"')
+
+# BIG FILE SKIPPING
+ /*
+  * Big file skipping is disable by default.
+  * SkipMinSize is the minimum file size for files to be skipped.
+  * SkipMaxFragmentCount is the maximum count of fragments which to allow.
+  * SkipMinAvarageFragmentSize is the minimum avarage fragmentation size
+  * for a file to be skipped.
+  */
+  SetVariable(MonthlyOptions,"!MonthlyOptions! SkipBigFiles=!Disabled!")
+  SetVariable(WeeklyOptions, "!WeeklyOptions!  SkipBigFiles=!Enabled!")
+  SetVariable(FavOnlyOptions,"!FavOnlyOptions! SkipBigFiles=!Disabled!")
+  SetVariable(Options,'!Options!  SkipMinSize="1 GB"')
+  SetVariable(Options,'!Options!  SkipMaxFragmentCount="2"')
+  SetVariable(Options,'!Options!  SkipMinAvarageFragmentSize="2 GB"')
+  SetVariable(Options,'!Options!  BigFileSelection="(FragmentCount(0, !SkipMaxFragmentCount!) and Size(!SkipMinSize!, 0)) or AverageFragmentSize(!SkipMinAvarageFragmentSize!, 0) and not(SelectNtfsSystemFiles(Yes) or Unmovable(Yes))"')
+
+# OTHER OPTIONS
+ /*
+  * NewUI         = enables new custom disk map colors.
+  * FlipTitleText = enables MyDefrag window title to be showed in reversed order.
+  * LogsOn        = enables logging.
+  * LogName       = changes the name for log file.
+  * MonthsForLastAccess = Skip game files if not accessed past x months (Not used for favorite game zones)
+  * GapAfterFavGames    = Only used when at least one fav game is set
+  * GapBeforeRemainingFiles  = Determines the gap before remaining files, the last zone
+  */
+  SetVariable(Options,"!Options! NewUI=!Enabled!")
+  SetVariable(Options,"!Options! FlipTitleText=!Enabled!")
+  SetVariable(Options,"!Options! LogsOn=!Enabled!")
+  SetVariable(Options,"!Options! LogName=MyDefrag.log")
+  SetVariable(Options,'!Options! MonthsForLastAccess=3')
+  SetVariable(Options,'!Options! GapAfterFavGames="VolumeSize * 0.05"')
+  SetVariable(Options,'!Options! GapBeforeRemainingFiles="NtfsZoneEnd"')
+
+# Configure action after finishing defragmentation. (see possible values from MyDefrag manual)
+  // E.g. to reboot after weekly schedule set DoWhenFinished="Shutdown Reboot" for WeeklyScheduleOptions line
+  SetVariable(MonthlyOptions,        '!MonthlyOptions!         DoWhenFinished="Wait"')
+  SetVariable(WeeklyOptions,         '!WeeklyOptions!          DoWhenFinished="Wait"')
+  SetVariable(FavOnlyOptions,        '!FavOnlyOptions!         DoWhenFinished="Wait"')
+  SetVariable(WeeklyScheduleOptions, '!WeeklyScheduleOptions!  DoWhenFinished="Exit"')
+  SetVariable(MonthlyScheduleOptions,'!MonthlyScheduleOptions! DoWhenFinished="Exit"')
+
+
+# SCRIPT RUN PARAMETERS
+  // To run the Main.MyD script with the above options from command line.
+  SetVariable(ScriptPath,'"!ScriptDirectory!\GamesOptimization\Main.MyD"')
+  SetVariable(StartMyD,'/C CD /D "!ExecutableDirectory!" && start MyDefrag.exe -m !Options! !ScriptPath!')

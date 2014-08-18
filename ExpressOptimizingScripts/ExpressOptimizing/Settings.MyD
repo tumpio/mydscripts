@@ -1,0 +1,143 @@
+# INITIALIZED OPTIONS
+  // DO NOT CHANGE
+  WindowSize(Invisible)
+  SetVariable(Enabled,"")
+  SetVariable(Disabled,"#")
+  SetVariable(IsIncluded,"!")
+  SetVariable(IsExcluded,"#")
+  SetVariable(q,'"""')
+  SetVariable(ps,'"%"')
+  SetVariable(MonthlyOptions,"")
+  SetVariable(WeeklyOptions,"")
+  SetVariable(Options,'RunCcleaner=!Disabled! DelayPrefetchListUpdate=!Disabled! AutomaticRestorePoint=!Disabled! SkipWrapAroundFiles=!Disabled! ScheduleOptions=""')
+
+# MONTHLY OPTIONS
+ /*
+  * File actions for Monthly version.
+  * SB,SBNTFS = Values for SkipBlocking, the percentage of min files
+  * and min size for the files to skip already sorted blocks on a zone.
+  */
+  SetVariable(DefragmentActions,"Defragment(Fast) Defragment()")
+  SetVariable(MonthlyOptions,"!MonthlyOptions! Version=Monthly")
+  SetVariable(MonthlyOptions,"!MonthlyOptions! SB=0.3")
+  SetVariable(MonthlyOptions,"!MonthlyOptions! SBNTFS=0")
+  SetVariable(MonthlyOptions,"!MonthlyOptions! SortDirectories=!Enabled!")
+  SetVariable(MonthlyOptions,'!MonthlyOptions! DefragmentActions="!DefragmentActions!"')
+  SetVariable(MonthlyOptions,'!MonthlyOptions! VersionFileActions="!DefragmentActions! MoveUpToZone() FastFill(WithShuffling)"')
+  SetVariable(MonthlyOptions,'!MonthlyOptions! PrefetchFileActions="SortByImportSequence(Ascending SkipBlock(ZONE220N * 0.01, ZONE222N * 0.01))"')
+
+# WEEKLY OPTIONS
+ /*
+  * File actions for Weekly version.
+  * SB,SBNTFS = Values for SkipBlocking, the percentage of min files
+  * and min size for the files to skip already sorted blocks on a zone.
+  */
+  SetVariable(DefragmentActions,"Defragment(ChunkSize(32))")
+  SetVariable(WeeklyOptions,"!WeeklyOptions! Version=Weekly")
+  SetVariable(WeeklyOptions,"!WeeklyOptions! SB=0.01")
+  SetVariable(WeeklyOptions,"!WeeklyOptions! SBNTFS=0.3")
+  SetVariable(WeeklyOptions,"!WeeklyOptions! SortDirectories=!Disabled!")
+  SetVariable(WeeklyOptions,'!WeeklyOptions! DefragmentActions="!DefragmentActions!"')
+  SetVariable(WeeklyOptions,'!WeeklyOptions! VersionFileActions="!DefragmentActions! MoveUpToZone() FastFill()"')
+  SetVariable(WeeklyOptions,'!WeeklyOptions! PrefetchFileActions="!DefragmentActions! FastFill()"')
+
+# SCHEDULE OPTIONS
+ /*
+  * Settings for the scheduled scripts.
+  * Configured to run without any visible window and to close when finished.
+  * Weekly version has more settings to run it slower than normal and
+  * with the lowest priority. This allows to run it while using the pc.
+  * Read the definitions of all available settings from MyDefrag manual.
+  */
+  SetVariable(ScheduledDrive,"C:")
+  SetVariable(WeeklyScheduleOptions, 'ScheduleOptions="WindowSize(Invisible) Slowdown(40) ProcessPriority(Background)"')
+  SetVariable(MonthlyScheduleOptions,'ScheduleOptions="WindowSize(Invisible)"')
+
+# PREFETCH OPTIMIZATION
+ /*
+  * By default prefetch optimization is included, to exclude, change it to !IsExcluded!.
+  * LayoutIni, ProgramHints are options for the prefetch file selection.
+  * My recommendation is to use LayoutIni (ImportFromBootOptimize) only, because
+  * Program Hints changes more frequently. Enable the ProgramHints selection method,
+  * if you have configured prefetcher to only prefetch Applications. ("EnablePrefetcher=1")
+  * SkipWrapAroundFiles is option to skip fragmented files with 2 fragment count.
+  * On monthly SkipBlocking may Wrap files around to skipped block by fragmenting them.
+  * This option is to prevent defragmenting them and to shuffle files less than
+  * it is needed on Weekly.
+  */
+  SetVariable(Options,'!Options! PrefetchOptimization="!IsIncluded!"')
+  SetVariable(Options,"!Options! LayoutIni=!Enabled!")
+  SetVariable(Options,"!Options! ProgramHints=!Disabled!")
+  SetVariable(WeeklyOptions,"!WeeklyOptions! SkipWrapAroundFiles=!Enabled!")
+
+# BIG FILE SKIPPING
+ /*
+  * Big file skipping is enabled for the Weekly Script.
+  * SkipMinSize is the minimum file size for files to be skipped.
+  * SkipMaxFragmentCount is the maximum count of fragments which to allow.
+  * SkipMinAvarageFragmentSize is the minimum avarage fragmentation size
+  * for a file to be skipped.
+  */
+  SetVariable(MonthlyOptions,"!MonthlyOptions! SkipBigFiles=!Disabled!")
+  SetVariable(WeeklyOptions, "!WeeklyOptions!  SkipBigFiles=!Enabled!")
+  SetVariable(Options,'!Options!  SkipMinSize="256 MB"')
+  SetVariable(Options,'!Options!  SkipMaxFragmentCount="2"')
+  SetVariable(Options,'!Options!  SkipMinAvarageFragmentSize="128 MB"')
+  SetVariable(Options,'!Options!  BigFileSelection="(FragmentCount(0, !SkipMaxFragmentCount!) and Size(!SkipMinSize!, 0)) or AverageFragmentSize(!SkipMinAvarageFragmentSize!, 0) and not(SelectNtfsSystemFiles(Yes) or Unmovable(Yes))"')
+
+# GAPS AND POSITIONS
+  // Position: space hog files
+  // to move them to the end of the disk, change "SpaceHogsFileActions" to "MoveToEndOfDisk()".
+  SetVariable(Options,'!Options! SpaceHogsPosition="MakeGap(RoundUp(VolumeUsed, Minimum(VolumeSize * 0.1, 5 GB)), DoNotVacate)"')
+  SetVariable(Options,'!Options! SpaceHogsFileActions="Defragment(ChunkSize(128)) MoveUpToZone() FastFill()"')
+  // Position: ntfs & directories
+  // (ZoneBegin = Prefetched files ZoneEnd)
+  SetVariable(MinRoundSize,"SetVariable(GapRoundSize, Minimum(4GB, VolumeSize * 0.05, RoundUp(VolumeUsed * 0.05, 2 GB)))")
+  SetVariable(Gap,"MakeGap(RoundDown(ZoneBegin + GapRoundSize * 1.25, GapRoundSize), DoNotVacate)")
+  SetVariable(Options,'!Options! "NTFSZonePosition=!MinRoundSize! !Gap!"')
+  // Gap: between applications data and remaining files zone
+  // Size to round up the applications data zone end
+  SetVariable(Options,'!Options! GapRemainingFiles="128 MB"')
+
+# OTHER OPTIONS
+ /*
+  * Optional Tasks can be configured individually for any version of the script.
+  * E.g. to only run ccleaner before defragmenting on Monthly Schedule,
+  * change the RunCcleaner to !Enable! for the MonthlyScheduleOptions line.
+  * NewUI         = enables the new disk map colors.
+  * FlipTitleText = enables MyDefrag window title to be showed on reversed order.
+  * ZONE          = Message format to display the current zone and task (Default: Task x/n "zone name")
+  * LogsOn        = enables logging.
+  * LogName       = changes the name for the log file.
+  */
+  SetVariable(Options,"!Options! NewUI=!Enabled!")
+  SetVariable(Options,"!Options! FlipTitleText=!Enabled!")
+  SetVariable(Options,'!Options! ZONE="Message(!q!Zone !ps!1u of !ps!2u!q!, !q!Task !ps!1u/!ps!2u"')
+  SetVariable(Options,"!Options! LogsOn=!Enabled!")
+  SetVariable(Options,"!Options! LogName=MyDefrag.log")
+  // Configure action after finishing defragmentation. (see possible values from MyDefrag manual)
+  // e.g. to reboot after weekly schedule set DoWhenFinished="Shutdown Reboot" for WeeklyScheduleOptions line
+  SetVariable(MonthlyOptions,        '!MonthlyOptions!         DoWhenFinished="Wait"')
+  SetVariable(WeeklyOptions,         '!WeeklyOptions!          DoWhenFinished="Wait"')
+  SetVariable(WeeklyScheduleOptions, '!WeeklyScheduleOptions!  DoWhenFinished="Exit"')
+  SetVariable(MonthlyScheduleOptions,'!MonthlyScheduleOptions! DoWhenFinished="Exit"')
+  // (OPTIONAL) Run Ccleaner before defragmenting
+  SetVariable(MonthlyOptions,        "!MonthlyOptions!         RunCcleaner=!Disabled!")
+  SetVariable(WeeklyOptions,         "!WeeklyOptions!          RunCcleaner=!Disabled!")
+  SetVariable(WeeklyScheduleOptions, "!WeeklyScheduleOptions!  RunCcleaner=!Disabled!")
+  SetVariable(MonthlyScheduleOptions,"!MonthlyScheduleOptions! RunCcleaner=!Disabled!")
+  // (OPTIONAL) Delay prefetched files list updating
+  SetVariable(MonthlyOptions,        "!MonthlyOptions!         DelayPrefetchListUpdate=!Disabled!")
+  SetVariable(WeeklyOptions,         "!WeeklyOptions!          DelayPrefetchListUpdate=!Disabled!")
+  SetVariable(WeeklyScheduleOptions, "!WeeklyScheduleOptions!  DelayPrefetchListUpdate=!Disabled!")
+  SetVariable(MonthlyScheduleOptions,"!MonthlyScheduleOptions! DelayPrefetchListUpdate=!Disabled!")
+  // (OPTIONAL) Create automatic restore point after finishing
+  SetVariable(MonthlyOptions,        "!MonthlyOptions!         AutomaticRestorePoint=!Disabled!")
+  SetVariable(WeeklyOptions,         "!WeeklyOptions!          AutomaticRestorePoint=!Disabled!")
+  SetVariable(WeeklyScheduleOptions, "!WeeklyScheduleOptions!  AutomaticRestorePoint=!Disabled!")
+  SetVariable(MonthlyScheduleOptions,"!MonthlyScheduleOptions! AutomaticRestorePoint=!Disabled!")
+
+# SCRIPT RUN PARAMETERS
+  // Run the Main.MyD script with the above options from command line.
+  SetVariable(ScriptPath,'"!ScriptDirectory!\ExpressOptimizing\Main.MyD"')
+  SetVariable(StartMyD,'/C CD /D "!ExecutableDirectory!" && start MyDefrag.exe -m !Options! !ScriptPath!')

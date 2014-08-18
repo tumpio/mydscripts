@@ -1,0 +1,37 @@
+  MakeGap(RoundUp(FavGameZoneEnd, FavGAP), DoNotVacate)
+
+  SetVariable(NtfsZoneBegin, ZoneBegin)    // calculate next zone size (next zone begin = last zone end + last gap)
+
+  # Place remaining NTFS system files
+  FileSelect
+    SelectNtfsSystemFiles(yes) and not (FileName("$MFT"))
+  FileActions
+    MoveUpToZone()
+    MoveDownFill()
+    AddGap(RoundUp(ZoneEnd, 71 MB), DoNotVacate)
+  FileEnd
+
+  # Place $MFT and reserve NTFS reserved area
+  FileSelect
+    FileName("$MFT")
+  FileActions
+    PlaceNtfsSystemFiles(Ascending, RoundUp(ZoneBegin + MftSize + 100MB, 16MB) - MftSize - ZoneBegin)
+  FileEnd
+
+  # Place Directories with creation date separation
+  !SortDirectories! FileSelect Directory(yes) and not (CreationDate(28 days ago, now)) FileActions SortByName(Ascending) FileEnd
+  FileSelect
+    Directory(yes)
+  FileActions
+    Defragment(Fast)
+    Defragment()
+    MoveUpToZone()
+    FastFill(WithShuffling)
+  FileEnd
+  
+  MakeGap(RoundUp(ZoneBegin, 8 MB), DoNotVacate)
+  
+  SetVariable(NtfsZoneEnd, ZoneEnd)
+  SetVariable(NtfsZoneSize, Maximum(NtfsZoneEnd - NtfsZoneBegin, 0))    // this way zone size can be used outside of the zone's file actions
+
+  !NotInFavOnlyStart!

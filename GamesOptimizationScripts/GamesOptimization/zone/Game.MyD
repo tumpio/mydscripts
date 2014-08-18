@@ -1,0 +1,6 @@
+  FileSelect
+    DirectoryPath("!Game!")
+    and not (LastAccessEnabled(yes) and LastAccess(,MonthsForLastAccess months ago))
+  FileActions
+    !VersionFileActions!
+  FileEnd

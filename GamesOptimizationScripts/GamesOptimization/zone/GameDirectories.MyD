@@ -1,0 +1,16 @@
+  FileSelect
+    (DirectoryPath("!GamesDirectoryPath!")
+    and not (
+      DirectoryPath("!DesuraAppPath!")
+      or DirectoryPath("!OriginAppPath!")
+      or DirectoryPath("!OtherAppPath!")
+      or DirectoryPath("!SteamAppPath!")
+    ))
+    or DirectoryPath("!DesuraGamesPath!")
+    or DirectoryPath("!OriginGamesPath!")
+    or DirectoryPath("!OtherGamesPath!")
+    or DirectoryPath("!SteamGamesPath!")
+    and not (LastAccessEnabled(yes) and LastAccess(,MonthsForLastAccess months ago))
+  FileActions
+    !VersionFileActions!
+  FileEnd

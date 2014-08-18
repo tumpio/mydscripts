@@ -1,0 +1,56 @@
+Title("GamesOptimization: !Version!")
+OtherInstances(allow)
+BatteryPower(allow)
+!ScheduleOptions!
+!include List - Game Directories.txt!
+!NewUI! SetFileColor(All, 54,54,54)  # Dark-Grey
+
+
+!LogsOn! WriteLogfile("!LogName!", "LogHeader")
+
+VolumeSelect
+  Name("!DriveLetter!")
+VolumeActions
+
+!include zone\UI!
+
+  !LogsOn! AppendLogfile("!LogName!", "LogBefore")
+
+  !SkipBigFiles! FileSelect !BigFileSelection! FileActions FileEnd MakeGap(0)
+
+      !ZONE! Steam, Desura & Origin Program Files:")
+      !include zone\GameApps!
+
+      !ZONE! Space Hog Files:")
+      !SpaceHogs!include zone\SpaceHogs!
+
+      !ZONE! Favorite Games:")
+      !include List - Favorite Games.txt!
+
+      !ZONE! Save Games:")
+      !include zone\SaveGames!
+
+      !ZONE! Directories & NTFS System Files:")
+      !include zone\NtfsDirectories!
+
+      !ZONE! Game Directories:")
+      !include !ZonePath!\GameDirectories!
+
+      !ZONE! Custom Zones:")
+      !include zone\Custom!
+
+      !ZONE! Remaining Files:")
+      !include zone\RemainingFiles!
+
+  SetFileColor(All,All, 16,37,16) # Dark-Green
+
+  !LogsOn! AppendLogfile("!LogName!", "LogAfter")
+
+VolumeEnd
+
+!LogsOn! AppendLogfile("!LogName!", "LogFooter")
+
+
+Title("FINISHED")
+!NewUI! SetColor(Text, 0, 100, 0) # Green
+WhenFinished(!DoWhenFinished!)

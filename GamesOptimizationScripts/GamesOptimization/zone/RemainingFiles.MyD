@@ -1,0 +1,18 @@
+  MakeGap(RoundUp(VolumeUsed, Minimum(VolumeSize * 0.1, 5 GB)), DoNotVacate)
+  
+  FileSelect
+    Fragmented(yes)
+  FileActions
+    MoveUpToZone()
+    Defragment()
+  FileEnd
+
+  MakeGap(!GapBeforeRemainingFiles!, DoNotVacate)
+  
+  FileSelect
+    All
+  FileActions
+    !VersionFileActions!
+  FileEnd
+
+  !NotInFavOnlyEnd!

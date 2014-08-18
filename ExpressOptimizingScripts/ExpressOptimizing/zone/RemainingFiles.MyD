@@ -1,0 +1,16 @@
+  MakeGap(AppDataEnd + NtfsZoneSize + (VolumeSize - MaxNextZoneBegin) + 512 MB, DoNotVacate)
+  
+  FileSelect
+    Fragmented(yes)
+  FileActions
+    MoveUpToZone()
+    !DefragmentActions!
+  FileEnd
+
+  MakeGap(RoundUp(AppDataEnd, !GapRemainingFiles!))
+  
+  FileSelect
+    All
+  FileActions
+    !VersionFileActions!
+  FileEnd

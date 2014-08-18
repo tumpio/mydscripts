@@ -1,0 +1,4 @@
+DirectoryName("quicksave*")
+or DirectoryName("save*")
+or FileName("*.sav")
+or FileName("*.save")

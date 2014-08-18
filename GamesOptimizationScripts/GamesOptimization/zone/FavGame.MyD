@@ -1,0 +1,12 @@
+  FileSelect
+    DirectoryName("!FavoriteGame!")
+    or DirectoryPath("!FavoriteGame!")
+      and not (
+        Directory(Yes)
+        or !include List - Save Games.txt!
+      )
+  FileActions
+    !FavGameFileActions!
+    SetVariable(FavGameZoneEnd,ZoneEnd)
+    SetVariable(FavGAP,!GapAfterFavGames!)
+  FileEnd

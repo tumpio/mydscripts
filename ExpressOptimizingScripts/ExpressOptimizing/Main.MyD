@@ -1,0 +1,54 @@
+Title("ExpressOptimizing: !Version!")
+OtherInstances(allow)
+BatteryPower(allow)
+!ScheduleOptions!
+!NewUI! SetFileColor(All, 54,54,54)  # Dark-Grey
+
+
+!RunCcleaner!  RunProgram("CMD",'/C CD /D "!ScriptDirectory!\bat" && RunCcleaner && exit')
+!DelayPrefetchListUpdate!  RunProgram("CMD",'/C CD /D "!ScriptDirectory!\bat" && DelayPrefetchListUpdate && exit')
+
+
+!LogsOn! WriteLogfile("!LogName!", "LogHeader")
+
+VolumeSelect
+  Name("!DriveLetter!")
+VolumeActions
+
+!include UI!
+
+  !LogsOn! AppendLogfile("!LogName!", "LogBefore")
+
+  !SkipBigFiles! FileSelect !BigFileSelection! FileActions FileEnd MakeGap(0)
+
+      !ZONE! Prefetched Files:")
+      !PrefetchOptimization!include "zone\PrefetchOptimization"!
+
+      !ZONE! Directories & NTFS System Files:")
+      !include "zone\NtfsDirectories"!
+
+      !ZONE! Space Hog Files:")
+      !include "zone\SpaceHogs"!
+
+      !ZONE! Applications Data:")
+      !include "zone\ApplicationsData"!
+
+      !ZONE! Custom Zones:")
+      !include "zone\Custom"!
+
+      !ZONE! Defrag & Consolidate Remaining Files:")
+      !include "zone\RemainingFiles"!
+
+  !LogsOn! AppendLogfile("!LogName!", "LogAfter")
+
+VolumeEnd
+
+!LogsOn! AppendLogfile("!LogName!", "LogFooter")
+
+
+!AutomaticRestorePoint! RunProgram("CMD",'/C CD /D "!ScriptDirectory!\bat && AutomaticRestorePoint && exit')
+
+
+Title("FINISHED")
+!NewUI! SetColor(Text, 0, 100, 0) # Green
+WhenFinished(!DoWhenFinished!)

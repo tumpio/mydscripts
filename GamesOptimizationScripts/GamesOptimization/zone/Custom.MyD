@@ -1,0 +1,13 @@
+  # ZONE: INCLUDES REST OF THE STEAMAPPS FOLDER
+  MakeGap(RoundUp(ZoneBegin, 512MB), DoNotVacate)
+
+  FileSelect
+    DirectoryName("SteamApps")
+    and not (LastAccessEnabled(yes) and LastAccess(,MonthsForLastAccess months ago))
+  FileActions
+    Defragment(Fast)
+    MoveUpToZone()
+    FastFill()
+  FileEnd
+
+  # ADD YOUR OWN CUSTOM ZONES BELOW..

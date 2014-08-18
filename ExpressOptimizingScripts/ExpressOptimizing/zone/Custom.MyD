@@ -1,0 +1,12 @@
+# WRITE YOUR OWN DRIVE SPECIFIC CUSTOM ZONES HERE
+
+# EXAMPLE ZONE: Games directory. #
+/*
+  Message("Zone %1u of %2u", "Task %1u/%2u Games:")
+  // Select Games folder by path
+  FileSelect
+    DirectoryPath("C:\Games")
+  FileActions
+    SortByName(Ascending SkipBlock(ZONE220N * SB, ZONE222N * SB))
+  FileEnd
+*/

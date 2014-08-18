@@ -1,0 +1,7 @@
+  !SpaceHogsPosition!
+
+  FileSelect
+    !include SpaceHogFiles.txt!
+  FileActions
+    !SpaceHogsFileActions!
+  FileEnd

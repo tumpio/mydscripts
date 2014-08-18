@@ -1,0 +1,8 @@
+  MakeGap(0)
+
+  FileSelect
+    !include List - Save Games.txt!
+    and not (Directory(Yes) or (LastAccessEnabled(yes) and LastAccess(,MonthsForLastAccess months ago)))
+  FileActions
+    !VersionFileActions!
+  FileEnd

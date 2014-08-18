@@ -1,0 +1,25 @@
+  !SkipWrapAroundFiles! FileSelect (FragmentCount(2, 2) and ImportListFromBootOptimize()) FileActions FileEnd
+  
+  FileSelect
+    !LayoutIni! ImportListFromBootOptimize()
+    !ProgramHints! ImportListFromProgramHints("*.pf")
+    and not (
+        Directory(Yes)
+        or Size(64 MB, 0)
+        or DirectoryName("Installer")
+        or DirectoryName("Profiles")
+        or (DirectoryPath("!DriveLetter!\Windows\Prefetch")
+            or DirectoryPath("!DriveLetter!\Documents and Settings")
+            or DirectoryPath("!DriveLetter!\ProgramData")
+            or DirectoryPath("!DriveLetter!\users")
+            and (CreationDate(28 days ago, now)
+                or LastChange(28 days ago, now)
+            )
+        )
+    )
+  FileActions
+    Message("SortBy", "SortByImportSequence")
+    !PrefetchFileActions!
+    Message("SortBy", "SortByName")
+    SetVariable(PrefetchZoneEnd, ZoneEnd)
+  FileEnd

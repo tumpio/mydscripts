@@ -1,0 +1,57 @@
+  MakeGap(RoundUp(PrefetchZoneEnd, 64 MB),DoNotVacate)
+
+  FileSelect
+    DirectoryName("AppData")
+    or DirectoryName("Applications Data")
+    or DirectoryName("Local Settings")
+    or DirectoryName("Program Data")
+    or DirectoryPath("!DriveLetter!\ProgramData")
+    or DirectoryPath("!DriveLetter!\Windows\System32\Config")
+    or DirectoryPath("!DriveLetter!\Windows\System32\tasks")
+    or DirectoryPath("!DriveLetter!\Windows\SysWOW64\tasks")
+    and not (
+        Directory(Yes)
+        or Size(64 MB, 0)
+        or (LastAccessEnabled(Yes) and LastAccess(, 28 days ago))
+        or Fragmented(Yes)
+        or LastChange(48 hours ago, now)
+    )
+  FileActions
+    SetVariable(AppDataEnd, ZoneEnd)
+    !VersionFileActions!
+  FileEnd
+
+  MakeGap(0)
+
+  FileSelect
+    DirectoryName("AppData")
+    or DirectoryName("Applications Data")
+    or DirectoryName("Local Settings")
+    or DirectoryName("Program Data")
+    or DirectoryName("ProgramData")
+    or DirectoryPath("!DriveLetter!\Windows\Prefetch")
+    or DirectoryPath("!DriveLetter!\Windows\System32\Config")
+    or DirectoryPath("!DriveLetter!\Windows\System32\tasks")
+    or DirectoryPath("!DriveLetter!\Windows\SysWOW64\tasks")
+    or FileName("*.cpl")
+    or FileName("ntuser*")
+    or FileName("thumb*.db")
+    or FileName("UsrClass*")
+    or (
+        DirectoryPath("!DriveLetter!\Program Files")
+        or DirectoryPath("!DriveLetter!\Program Files (x86)")
+        or DirectoryPath("!DriveLetter!\Windows")
+        and LastChange(28 days ago,now)
+        and not(CreationDate(28 days ago,now))
+    )
+    and not(
+        Directory(Yes)
+        or Size(64 MB, 0)
+        or (LastAccessEnabled(Yes) and LastAccess(, 28 days ago))
+    )
+  FileActions
+    !VersionFileActions!
+    SetVariable(AppDataEnd, ZoneEnd)
+  FileEnd
+
+  MakeGap(Maximum(RoundUp(AppDataEnd, 256 MB), RoundUp(NtfsZoneEnd, 8 MB)), DoNotVacate)

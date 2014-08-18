@@ -1,0 +1,17 @@
+!NewUI! SetColor(Allocated, 153,50,204)                       # Purple
+!NewUI! SetColor(BusyRead, 0,255,0)                           # Bright-Green
+!NewUI! SetColor(BusyWrite, 255,255,255)                      # White
+!NewUI! SetFileColor(All,All, 96,96,96)                       # Grey
+!NewUI! SetFileColor(All,Fragmented, 192,192,0)               # Dark-Yellow
+!NewUI! SetFileColor(All,Processed, 0,100,0)                  # Green
+!NewUI! SetFileColor(All,not(Movable), 192,0,0)               # Dark-Red
+!NewUI! SetFileColor(All,Selected, 65,105,225)                # Blue
+!NewUI! SetFileColor(All,Selected and Fragmented, 224,224,0)  # Yellow
+!NewUI! SetFileColor(All,Selected and not(Movable), 224,0,0)  # Red
+
+!NewUI! SetFileColor(Directory(Yes) and Unmovable(No), All, 255,140,0)                    # Orange
+!NewUI! SetFileColor(SelectNtfsSystemFiles(Yes) and Unmovable(No), All, 0,0,112)          # Dark-Blue
+!NewUI! !SkipBigFiles! SetFileColor(!BigFileSelection!, All, 16,37,16)                    # Dark-Grey
+!NewUI! SetFileColor(FileName("pagefile.sys") or FileName("hiberfil.sys"), All, 61,32,0)  # Brown
+
+!FlipTitleText! Message("%1s    %2s","%2s  -  %1s")

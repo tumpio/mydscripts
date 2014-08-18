@@ -1,0 +1,8 @@
+OtherInstances(Exit)
+BatteryPower(Exit)
+
+!include GamesOptimization\Settings!
+!include GamesOptimization\List - Game Directories.txt!
+
+RunProgram("CMD",'/C CD /D "!ScriptDirectory!\GamesOptimization\bat" && runHelper !ScheduledDrive! "!GameDirList!" && exit')
+RunProgram("CMD","!StartMyD! DriveLetter=!ScheduledDrive! !MonthlyOptions! !MonthlyScheduleOptions!")

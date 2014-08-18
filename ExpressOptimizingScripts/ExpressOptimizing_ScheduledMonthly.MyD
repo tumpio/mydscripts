@@ -1,0 +1,6 @@
+OtherInstances(Exit)
+BatteryPower(Exit)
+
+!include "ExpressOptimizing\Settings"!
+
+RunProgram("CMD","!StartMyD! DriveLetter=!ScheduledDrive! !MonthlyOptions! !MonthlyScheduleOptions!")

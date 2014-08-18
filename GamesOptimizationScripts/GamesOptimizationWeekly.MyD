@@ -1,0 +1,20 @@
+Title('GamesOptimization: Weekly')
+Description("Games Optimization - Weekly
+
+Weekly version won't run the dirMyD.bat file to generate the game directories
+list, instead game directories are processed as a whole zone all together.
+It's much lighter compared with the Monthly version which generates own zone
+for each game folder and processes them one by one. 
+
+NOTE:
+Set your Game installation directories in 'List - Game Directories.txt' and
+set your Favorite Games in 'List - Favorite Games.txt'.")
+
+!include GamesOptimization\Settings!
+
+VolumeSelect
+  CommandLineVolumes()
+VolumeActions
+VolumeEnd
+
+RunProgram("CMD","!StartMyD! DriveLetter=!MountPoint! !WeeklyOptions!")

@@ -1,0 +1,19 @@
+  FileSelect
+    DirectoryPath("!SteamAppPath!")
+    or DirectoryPath("!DesuraAppPath!")
+    or DirectoryPath("!OriginAppPath!")
+      and not(
+        Directory(Yes)
+        or DirectoryName("SteamApps")
+        or DirectoryName("Cache")
+        or DirectoryPath("!SteamGamesPath!")
+        or DirectoryPath("!DesuraGamesPath!")
+        or DirectoryPath("!OriginGamesPath!")
+        )
+  FileActions
+    !VersionFileActions!
+    AddGap(RoundUp(ZoneEnd, 512MB), DoNotVacate)
+  FileEnd
+
+  SetVariable(FavGameZoneEnd,ZoneBegin)
+  SetVariable(FavGAP,ZoneBegin)

@@ -1,0 +1,64 @@
+Title('Light SSD-Flash: Combo')
+Description("Script is intented for SSD and Flash drives as
+a lighter alternative to the MyDefrag Flash Memory Disk Script.
+
+Script is  separated to two parts, Defragment and Consolidation.
+The consolidation script is launched and closed automatically,
+after the end of the launch script (defragmentation).
+
+Note: Created for testing purposes!
+")
+
+/* Do not ignore wrap-around fragmentation.
+   It's a defragment only script for SSD and Flash disks
+   Wrap-around fragmentation does not help here and SortBy
+   optimization will not be used. */
+IgnoreWrapAroundFragmentation(no)
+
+/* Exclude big files (defragmented and slighly fragmented),
+   and fragmented unstable temp files or files modified or
+   created recently. */
+ExcludeFiles(
+    (FragmentCount(0,2) and Size(128MB,0))
+    or AverageFragmentSize(256MB,0)
+    or (Fragmented(Yes)
+        and (LastChange(28 days ago,now)
+          or CreationDate(28 days ago,now)
+          or DirectoryName("*download*")
+          or DirectoryName("*cache*")
+          or DirectoryName("cookies")
+          or DirectoryName("temp")
+          or DirectoryName("tmp")
+          or FileName("*.tmp")
+        )
+    )
+)
+
+WriteLogfile("MyDefrag.log","LogHeader")
+
+VolumeSelect
+  CommandlineVolumes()
+VolumeActions
+
+  AppendLogfile("MyDefrag.log","LogBefore")
+
+/* Defragment all non-excluded fragmented files
+   ChunkSize option used, ignores fragments bigger than 32MB.
+   Default for MyDefrag, 0
+   Default for Vista+ Build in defragmenter, 64MB */
+  FileSelect
+    All
+  FileActions
+    Defragment(ChunkSize(32))
+  FileEnd
+
+  AppendLogfile("MyDefrag.log","LogAfter")
+
+VolumeEnd
+
+AppendLogfile("MyDefrag.log","LogFooter")
+
+/* Start consolidation script. */
+RunProgram("!COMSPEC!",'/C CD /D "!ExecutableDirectory!" && start MyDefrag.exe -v !MountPoint! "!ScriptDirectory!\LightSSD-Flash_ConsolidateCombo.MyD"')
+
+WhenFinished(exit)

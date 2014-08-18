@@ -1,0 +1,38 @@
+Title('Light SSD-Flash: Consolidate')
+
+OtherInstances(allow)
+
+/* Do not ignore wrap-around fragmentation.
+   It's a defragment only script for SSD and Flash disks
+   Wrap-around fragmentation does not help here and SortBy
+   optimization will not be used. */
+IgnoreWrapAroundFragmentation(no)
+
+/* Exclude all fragmented files and non-fragmented big files. */
+ExcludeFiles(Fragmented(Yes) or Size(128MB,0))
+
+AppendLogfile("MyDefrag.log","
+
+
+
+___________________________ START OF CONSOLIDATION____________________________
+")
+
+VolumeSelect
+  CommandlineVolumes()
+VolumeActions
+
+  AppendLogfile("MyDefrag.log","LogBefore")
+  
+/* Consolidate free space. */
+  FileSelect
+    All
+  FileActions
+    FastFill()
+  FileEnd
+
+  AppendLogfile("MyDefrag.log","LogAfter")
+
+VolumeEnd
+
+AppendLogfile("MyDefrag.log","LogFooter")

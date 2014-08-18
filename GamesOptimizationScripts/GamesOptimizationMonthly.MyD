@@ -1,0 +1,21 @@
+Title('GamesOptimization: Monthly')
+Description("Games Optimization - Monthly
+
+Monthly version will first run the dirMyD.bat file to generate the game
+directories list. When it finishes succesfully, the list contains own
+zone for each game folder, and they are ordered by creation time. 
+
+NOTE:
+Set your Game installation directories in 'List - Game Directories.txt' and
+set your Favorite Games in 'List - Favorite Games.txt'.")
+
+!include GamesOptimization\Settings!
+!include GamesOptimization\List - Game Directories.txt!
+
+VolumeSelect
+  CommandLineVolumes()
+VolumeActions
+VolumeEnd
+
+RunProgram("CMD",'/C CD /D "!ScriptDirectory!\GamesOptimization\bat" && runHelper !MountPoint! "!GameDirList!" && exit')
+RunProgram("CMD","!StartMyD! DriveLetter=!MountPoint! !MonthlyOptions!")

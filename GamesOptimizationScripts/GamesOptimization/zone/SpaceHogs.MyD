@@ -1,0 +1,14 @@
+  !NotInFavOnlyStart!
+  
+  !SpaceHogsPosition!
+
+  FileSelect
+    !include List - Space Hogs.txt!
+  FileActions
+    !SpaceHogsFileActions!
+    SetVariable(SpaceHogsEnd, ZoneEnd)
+  FileEnd
+  
+  MakeGap(FavGameZoneEnd, DoNotVacate)
+  
+  !NotInFavOnlyEnd!

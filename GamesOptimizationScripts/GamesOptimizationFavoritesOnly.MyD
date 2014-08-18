@@ -1,0 +1,16 @@
+Title('GamesOptimization: Favorites')
+Description("Games Optimization - Favorite Games Only
+
+This version processes only the favorite games
+and leaves all other files untouched.
+
+Set your Favorite Games in 'List - Favorite Games.txt'.")
+
+!include GamesOptimization\Settings!
+
+VolumeSelect
+  CommandLineVolumes()
+VolumeActions
+VolumeEnd
+
+RunProgram("CMD","!StartMyD! DriveLetter=!MountPoint! !FavOnlyOptions!")
