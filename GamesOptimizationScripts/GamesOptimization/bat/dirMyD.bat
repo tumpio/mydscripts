@@ -40,8 +40,15 @@ ECHO Folder Found^^!
 REM Delims= is a TAB followed by a space in the next two lines.
 FOR /F "SKIP=2 TOKENS=2* DELIMS=	 " %%A IN ('REG QUERY "HKCU\Control Panel\International" /v iDate') DO SET _iDate=%%B
 FOR /F "SKIP=2 TOKENS=2* DELIMS=	 " %%A IN ('REG QUERY "HKCU\Control Panel\International" /v sDate') DO SET _sDate=%%B
+REM Set folder tokens starting position according to time regional settings
+SET _tok=5
+FOR /F "USEBACKQ SKIP=4 TOKENS=3 DELIMS= " %%A IN (`DIR /A:D/O:D/T:C "%FOLDER%"`) DO (
+    IF NOT "%%A"=="AM" IF NOT "%%A"=="PM" SET _tok=4
+    goto :break
+)
+:break
 (
-FOR /F "USEBACKQ SKIP=4 TOKENS=1,4* DELIMS= " %%A IN (`DIR /A:D/O:D/T:C "%FOLDER%"`) DO (
+FOR /F "USEBACKQ SKIP=4 TOKENS=1,%_tok%* DELIMS= " %%A IN (`DIR /A:D/O:D/T:C "%FOLDER%"`) DO (
   SET _fdate=
   CALL:CheckIllegal %%B > nul
   IF NOT "%%B"=="." IF NOT "%%B"==".." IF ERRORLEVEL 1 CALL:GetDate %%A %_sDate%
